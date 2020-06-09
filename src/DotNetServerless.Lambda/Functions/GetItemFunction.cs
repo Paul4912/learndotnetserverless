@@ -9,32 +9,33 @@ using Newtonsoft.Json;
 
 namespace DotNetServerless.Lambda.Functions
 {
-  public class GetItemFunction
-  {
-    private readonly IServiceProvider _serviceProvider;
-
-    public GetItemFunction() : this(Startup
-      .BuildContainer()
-    .BuildServiceProvider())
+    public class GetItemFunction
     {
-    }
+        private readonly IServiceProvider _serviceProvider;
 
-    public GetItemFunction(IServiceProvider serviceProvider)
-    {
-      _serviceProvider = serviceProvider;
-    }
+        public GetItemFunction() : this(Startup
+          .BuildContainer()
+        .BuildServiceProvider())
+        {
+        }
 
-    [LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
-    public async Task<APIGatewayProxyResponse> Run(APIGatewayProxyRequest request)
-    {
-      var requestModel = new GetItemRequest {Id = new Guid(request.PathParameters["id"])}; 
-      var mediator = _serviceProvider.GetService<IMediator>();
+        public GetItemFunction(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
 
-      var result = await mediator.Send(requestModel);
-      
-      return result == null ? 
-        new APIGatewayProxyResponse {StatusCode = 404} : 
-        new APIGatewayProxyResponse { StatusCode =  200,  Body = JsonConvert.SerializeObject(result)};
+        [LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
+        public async Task<APIGatewayProxyResponse> Run(APIGatewayProxyRequest request)
+        {
+            var requestModel = new GetItemRequest { noteId = new Guid(request.PathParameters["id"]) };
+            //requestModel.userId = request.RequestContext.Identity.CognitoIdentityId;
+            var mediator = _serviceProvider.GetService<IMediator>();
+
+            var result = await mediator.Send(requestModel);
+
+            return result == null ?
+              new APIGatewayProxyResponse { StatusCode = 404 } :
+              new APIGatewayProxyResponse { StatusCode = 200, Body = JsonConvert.SerializeObject(result) };
+        }
     }
-  }
 }

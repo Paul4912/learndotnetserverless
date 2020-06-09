@@ -9,29 +9,30 @@ using Newtonsoft.Json;
 
 namespace DotNetServerless.Lambda.Functions
 {
-  public class UpdateItemFunction
-  {
-    private readonly IServiceProvider _serviceProvider;
-
-    public UpdateItemFunction() : this(Startup
-      .BuildContainer()
-    .BuildServiceProvider())
+    public class UpdateItemFunction
     {
-    }
+        private readonly IServiceProvider _serviceProvider;
 
-    public UpdateItemFunction(IServiceProvider serviceProvider)
-    {
-      _serviceProvider = serviceProvider;
-    }
+        public UpdateItemFunction() : this(Startup
+          .BuildContainer()
+        .BuildServiceProvider())
+        {
+        }
 
-    [LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
-    public async Task<APIGatewayProxyResponse> Run(APIGatewayProxyRequest request)
-    {
-      var requestModel = JsonConvert.DeserializeObject<UpdateItemRequest>(request.Body);
-      var mediator = _serviceProvider.GetService<IMediator>();
-      var result = await mediator.Send(requestModel);
+        public UpdateItemFunction(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
 
-      return new APIGatewayProxyResponse { StatusCode =  200,  Body = JsonConvert.SerializeObject(result)};
+        [LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
+        public async Task<APIGatewayProxyResponse> Run(APIGatewayProxyRequest request)
+        {
+            var requestModel = JsonConvert.DeserializeObject<UpdateItemRequest>(request.Body);
+            //requestModel.userId = request.RequestContext.Identity.CognitoIdentityId;
+            var mediator = _serviceProvider.GetService<IMediator>();
+            var result = await mediator.Send(requestModel);
+
+            return new APIGatewayProxyResponse { StatusCode = 200, Body = JsonConvert.SerializeObject(result) };
+        }
     }
-  }
 }

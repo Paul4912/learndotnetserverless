@@ -20,7 +20,7 @@ namespace DotNetServerless.Application.Infrastructure.Repositories
       _client = clientFactory.GetAwsClient();
       _configuration = new DynamoDBOperationConfig
       {
-        OverrideTableName = configuration.TableName,
+        OverrideTableName = "dev-notes"/*configuration.TableName*/,
         SkipVersionCheck = true
       };
     }
@@ -39,7 +39,7 @@ namespace DotNetServerless.Application.Infrastructure.Repositories
       using (var context = new DynamoDBContext(_client))
       {
 
-        var scanCondition = new ScanCondition(nameof(Item.Id), ScanOperator.Equal, id);
+        var scanCondition = new ScanCondition(nameof(Item.noteId), ScanOperator.Equal, id);
         var search = context.ScanAsync<T>(new[] { scanCondition }, _configuration);
 
         while (!search.IsDone)

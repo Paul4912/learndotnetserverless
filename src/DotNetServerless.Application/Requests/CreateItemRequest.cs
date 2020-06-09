@@ -3,20 +3,21 @@ using MediatR;
 
 namespace DotNetServerless.Application.Requests
 {
-  public class CreateItemRequest : IRequest<Item>
-  {
-    public string Description { get; set; }
-    public string Code { get; set; }
-    public bool IsChecked { get; set; }
-
-    public Item Map()
+    public class CreateItemRequest : IRequest<Item>
     {
-      return new Item
-      {
-        Description = Description,
-        Code = Code,
-        IsChecked = IsChecked
-      };
+        public string Content { get; set; }
+        public string Attachment { get; set; }
+
+        public string userId { get; set; }
+
+        public Item Map()
+        {
+            return new Item
+            {
+                Content = Content,
+                Attachment = Attachment,
+                userId = userId
+            };
+        }
     }
-  }
 }
