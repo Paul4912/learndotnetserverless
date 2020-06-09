@@ -19,7 +19,7 @@ namespace DotNetServerless.Tests.Functions
     public GetItemFunctionTests()
     {
       _mockRepository = new Mock<IItemRepository>();
-      _mockRepository.Setup(_ => _.GetById<Item>(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new List<Item>{ new Item{ Id = Guid.NewGuid().ToString()}});
+      _mockRepository.Setup(_ => _.GetById<Item>(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(new List<Item>{ new Item{ noteId = Guid.NewGuid().ToString()}});
 
       var serviceCollection = Startup.BuildContainer();
 
