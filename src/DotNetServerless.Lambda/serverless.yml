@@ -22,25 +22,25 @@ package:
   
 functions:
   create:
-    handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.CreateItemFunction::Run
+    handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.CreateNoteFunction::Run
     events:
       - http:
-          path: items
+          path: notes
           method: post
           cors: true
 
   get:
-    handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.GetItemFunction::Run
+    handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.GetNoteFunction::Run
     events:
       - http:
-          path: items/{id}
+          path: notes/{id}
           method: get
           cors: true
 
   update:
-    handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.UpdateItemFunction::Run
+    handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.UpdateNoteFunction::Run
     events:
       - http:
-          path: items
+          path: notes
           method: put
           cors: true

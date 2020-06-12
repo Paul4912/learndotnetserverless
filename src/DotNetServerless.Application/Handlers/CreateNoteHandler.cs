@@ -8,16 +8,16 @@ using MediatR;
 
 namespace DotNetServerless.Application.Handlers
 {
-    public class CreateItemHandler : IRequestHandler<CreateItemRequest, Item>
+    public class CreateNoteHandler : IRequestHandler<CreateNoteRequest, Note>
     {
-        private readonly IItemRepository _itemRepository;
+        private readonly INoteRepository _itemRepository;
 
-        public CreateItemHandler(IItemRepository itemRepository)
+        public CreateNoteHandler(INoteRepository itemRepository)
         {
             _itemRepository = itemRepository;
         }
 
-        public async Task<Item> Handle(CreateItemRequest request, CancellationToken cancellationToken)
+        public async Task<Note> Handle(CreateNoteRequest request, CancellationToken cancellationToken)
         {
             var item = request.Map();
             item.noteId = Guid.NewGuid().ToString();

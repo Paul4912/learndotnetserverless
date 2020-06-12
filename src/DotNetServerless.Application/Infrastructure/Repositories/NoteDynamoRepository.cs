@@ -9,12 +9,12 @@ using DotNetServerless.Application.Infrastructure.Configs;
 
 namespace DotNetServerless.Application.Infrastructure.Repositories
 {
-  public class ItemDynamoRepository : IItemRepository
+  public class NoteDynamoRepository : INoteRepository
   {
     private readonly AmazonDynamoDBClient _client;
     private readonly DynamoDBOperationConfig _configuration;
 
-    public ItemDynamoRepository(DynamoDbConfiguration configuration,
+    public NoteDynamoRepository(DynamoDbConfiguration configuration,
       IAwsClientFactory<AmazonDynamoDBClient> clientFactory)
     {
       _client = clientFactory.GetAwsClient();
@@ -25,7 +25,7 @@ namespace DotNetServerless.Application.Infrastructure.Repositories
       };
     }
 
-    public async Task Save(Item item, CancellationToken cancellationToken)
+    public async Task Save(Note item, CancellationToken cancellationToken)
     {
       using (var context = new DynamoDBContext(_client))
       {
@@ -39,7 +39,7 @@ namespace DotNetServerless.Application.Infrastructure.Repositories
       using (var context = new DynamoDBContext(_client))
       {
 
-        var scanCondition = new ScanCondition(nameof(Item.noteId), ScanOperator.Equal, id);
+        var scanCondition = new ScanCondition(nameof(Note.noteId), ScanOperator.Equal, id);
         var search = context.ScanAsync<T>(new[] { scanCondition }, _configuration);
 
         while (!search.IsDone)

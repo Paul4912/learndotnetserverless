@@ -3,7 +3,7 @@ using System;
 
 namespace DotNetServerless.Application.Entities
 {
-    public class Item
+    public class Note
     {
         [DynamoDBHashKey]
         public string userId { get; set; }
