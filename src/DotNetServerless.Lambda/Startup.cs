@@ -29,7 +29,7 @@ namespace DotNetServerless.Lambda
       services
         .AddMediatR()
         .AddTransient(typeof(IAwsClientFactory<>), typeof(AwsClientFactory<>))
-        .AddTransient<IItemRepository, ItemDynamoRepository>()
+        .AddTransient<INoteRepository, NoteDynamoRepository>()
         .BindAndConfigure(configurationRoot.GetSection("DynamoDbConfiguration"), new DynamoDbConfiguration())
         .BindAndConfigure(configurationRoot.GetSection("AwsBasicConfiguration"), new AwsBasicConfiguration());
 

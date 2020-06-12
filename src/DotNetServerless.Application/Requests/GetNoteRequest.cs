@@ -4,7 +4,7 @@ using MediatR;
 
 namespace DotNetServerless.Application.Requests
 {
-    public class GetItemRequest : IRequest<Item>
+    public class GetNoteRequest : IRequest<Note>
     {
         public Guid noteId { get; set; }
         public string userId { get; set; }

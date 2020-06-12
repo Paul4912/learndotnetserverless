@@ -5,10 +5,10 @@ using DotNetServerless.Application.Entities;
 
 namespace DotNetServerless.Application.Infrastructure.Repositories
 {
-  public interface IItemRepository
+  public interface INoteRepository
   {
     Task<IEnumerable<T>> GetById<T>(string id, CancellationToken cancellationToken);
 
-    Task Save(Item item, CancellationToken cancellationToken);
+    Task Save(Note item, CancellationToken cancellationToken);
   }
 }

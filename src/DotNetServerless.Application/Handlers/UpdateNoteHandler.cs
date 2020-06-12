@@ -7,16 +7,16 @@ using MediatR;
 
 namespace DotNetServerless.Application.Handlers
 {
-  public class UpdateItemHandler : IRequestHandler<UpdateItemRequest, Item>
+  public class UpdateNoteHandler : IRequestHandler<UpdateNoteRequest, Note>
   {
-    private readonly IItemRepository _itemRepository;
+    private readonly INoteRepository _itemRepository;
 
-    public UpdateItemHandler(IItemRepository itemRepository)
+    public UpdateNoteHandler(INoteRepository itemRepository)
     {
       _itemRepository = itemRepository;
     }
 
-    public async Task<Item> Handle(UpdateItemRequest request, CancellationToken cancellationToken)
+    public async Task<Note> Handle(UpdateNoteRequest request, CancellationToken cancellationToken)
     {
       var item = request.Map();
       await _itemRepository.Save(item, cancellationToken);

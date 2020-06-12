@@ -8,19 +8,19 @@ using MediatR;
 
 namespace DotNetServerless.Application.Handlers
 {
-  public class GetItemHandler : IRequestHandler<GetItemRequest, Item>
+  public class GetNoteHandler : IRequestHandler<GetNoteRequest, Note>
   {
-    private readonly IItemRepository _itemRepository;
+    private readonly INoteRepository _itemRepository;
 
-    public GetItemHandler(IItemRepository itemRepository)
+    public GetNoteHandler(INoteRepository itemRepository)
     {
       _itemRepository = itemRepository;
     }
 
 
-    public async Task<Item> Handle(GetItemRequest request, CancellationToken cancellationToken)
+    public async Task<Note> Handle(GetNoteRequest request, CancellationToken cancellationToken)
     {
-      var result = await _itemRepository.GetById<Item>(request.noteId.ToString(), cancellationToken);
+      var result = await _itemRepository.GetById<Note>(request.noteId.ToString(), cancellationToken);
       return result.FirstOrDefault();
     }
   }

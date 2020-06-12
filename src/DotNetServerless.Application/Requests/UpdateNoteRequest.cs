@@ -3,16 +3,16 @@ using MediatR;
 
 namespace DotNetServerless.Application.Requests
 {
-    public class UpdateItemRequest : IRequest<Item>
+    public class UpdateNoteRequest : IRequest<Note>
     {
         public string userId { get; set; }
         public string noteId { get; set; }
         public string Content { get; set; }
         public string Attachment { get; set; }
 
-        public Item Map()
+        public Note Map()
         {
-            return new Item
+            return new Note
             {
                 userId = userId,
                 noteId = noteId,

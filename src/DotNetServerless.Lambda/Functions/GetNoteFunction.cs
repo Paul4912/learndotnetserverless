@@ -9,32 +9,33 @@ using Newtonsoft.Json;
 
 namespace DotNetServerless.Lambda.Functions
 {
-    public class CreateItemFunction
+    public class GetNoteFunction
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public CreateItemFunction() : this(Startup
+        public GetNoteFunction() : this(Startup
           .BuildContainer()
-          .BuildServiceProvider())
+        .BuildServiceProvider())
         {
         }
 
-        public CreateItemFunction(IServiceProvider serviceProvider)
+        public GetNoteFunction(IServiceProvider serviceProvider)
         {
-
             _serviceProvider = serviceProvider;
         }
 
         [LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
         public async Task<APIGatewayProxyResponse> Run(APIGatewayProxyRequest request)
         {
-            var requestModel = JsonConvert.DeserializeObject<CreateItemRequest>(request.Body);
+            var requestModel = new GetNoteRequest { noteId = new Guid(request.PathParameters["id"]) };
             //requestModel.userId = request.RequestContext.Identity.CognitoIdentityId;
             var mediator = _serviceProvider.GetService<IMediator>();
 
             var result = await mediator.Send(requestModel);
 
-            return new APIGatewayProxyResponse { StatusCode = 201, Body = JsonConvert.SerializeObject(result) };
+            return result == null ?
+              new APIGatewayProxyResponse { StatusCode = 404 } :
+              new APIGatewayProxyResponse { StatusCode = 200, Body = JsonConvert.SerializeObject(result) };
         }
     }
 }

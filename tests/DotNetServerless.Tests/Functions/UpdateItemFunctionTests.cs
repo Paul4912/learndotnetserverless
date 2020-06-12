@@ -18,25 +18,25 @@ namespace DotNetServerless.Tests.Functions
   {
     public UpdateItemFunctionTests()
     {
-      _mockRepository = new Mock<IItemRepository>();
-      _mockRepository.Setup(_ => _.Save(It.IsAny<Item>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+      _mockRepository = new Mock<INoteRepository>();
+      _mockRepository.Setup(_ => _.Save(It.IsAny<Note>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
       var serviceCollection = Startup.BuildContainer();
 
-      serviceCollection.Replace(new ServiceDescriptor(typeof(IItemRepository), _ => _mockRepository.Object,
+      serviceCollection.Replace(new ServiceDescriptor(typeof(INoteRepository), _ => _mockRepository.Object,
         ServiceLifetime.Transient));
 
-      _sut = new UpdateItemFunction(serviceCollection.BuildServiceProvider());
+      _sut = new UpdateNoteFunction(serviceCollection.BuildServiceProvider());
     }
 
-    private readonly UpdateItemFunction _sut;
-    private readonly Mock<IItemRepository> _mockRepository;
+    private readonly UpdateNoteFunction _sut;
+    private readonly Mock<INoteRepository> _mockRepository;
 
     [Fact]
     public async Task run_should_trigger_mediator_handler_and_repository()
     {
       await _sut.Run(new APIGatewayProxyRequest{ Body = JsonConvert.SerializeObject(new UpdateItemRequest())});
-      _mockRepository.Verify(_ => _.Save(It.IsAny<Item>(), It.IsAny<CancellationToken>()), Times.Once);
+      _mockRepository.Verify(_ => _.Save(It.IsAny<Note>(), It.IsAny<CancellationToken>()), Times.Once);
     }
     
     [Theory]
