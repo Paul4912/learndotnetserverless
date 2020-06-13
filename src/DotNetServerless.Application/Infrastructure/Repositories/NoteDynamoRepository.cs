@@ -9,47 +9,64 @@ using DotNetServerless.Application.Infrastructure.Configs;
 
 namespace DotNetServerless.Application.Infrastructure.Repositories
 {
-  public class NoteDynamoRepository : INoteRepository
-  {
-    private readonly AmazonDynamoDBClient _client;
-    private readonly DynamoDBOperationConfig _configuration;
-
-    public NoteDynamoRepository(DynamoDbConfiguration configuration,
-      IAwsClientFactory<AmazonDynamoDBClient> clientFactory)
+    public class NoteDynamoRepository : INoteRepository
     {
-      _client = clientFactory.GetAwsClient();
-      _configuration = new DynamoDBOperationConfig
-      {
-        OverrideTableName = "dev-notes"/*configuration.TableName*/,
-        SkipVersionCheck = true
-      };
-    }
+        private readonly AmazonDynamoDBClient _client;
+        private readonly DynamoDBOperationConfig _configuration;
 
-    public async Task Save(Note item, CancellationToken cancellationToken)
-    {
-      using (var context = new DynamoDBContext(_client))
-      {
-        await context.SaveAsync(item, _configuration, cancellationToken);
-      }
-    }
-
-    public async Task<IEnumerable<T>> GetById<T>(string id, CancellationToken cancellationToken)
-    {
-      var resultList = new List<T>();
-      using (var context = new DynamoDBContext(_client))
-      {
-
-        var scanCondition = new ScanCondition(nameof(Note.noteId), ScanOperator.Equal, id);
-        var search = context.ScanAsync<T>(new[] { scanCondition }, _configuration);
-
-        while (!search.IsDone)
+        public NoteDynamoRepository(DynamoDbConfiguration configuration,
+          IAwsClientFactory<AmazonDynamoDBClient> clientFactory)
         {
-          var entities = await search.GetNextSetAsync(cancellationToken);
-          resultList.AddRange(entities);
+            _client = clientFactory.GetAwsClient();
+            _configuration = new DynamoDBOperationConfig
+            {
+                OverrideTableName = "dev-notes"/*configuration.TableName*/,
+                SkipVersionCheck = true
+            };
         }
-      }
 
-      return resultList;
+        public async Task Save(Note item, CancellationToken cancellationToken)
+        {
+            using (var context = new DynamoDBContext(_client))
+            {
+                await context.SaveAsync(item, _configuration, cancellationToken);
+            }
+        }
+
+        public async Task<IEnumerable<T>> GetById<T>(string id, CancellationToken cancellationToken)
+        {
+            var resultList = new List<T>();
+            using (var context = new DynamoDBContext(_client))
+            {
+                var scanCondition = new ScanCondition(nameof(Note.noteId), ScanOperator.Equal, id);
+                var search = context.ScanAsync<T>(new[] { scanCondition }, _configuration);
+
+                while (!search.IsDone)
+                {
+                    var entities = await search.GetNextSetAsync(cancellationToken);
+                    resultList.AddRange(entities);
+                }
+            }
+
+            return resultList;
+        }
+
+        public async Task<IEnumerable<T>> ListByUserId<T>(string id, CancellationToken cancellationToken)
+        {
+            var resultList = new List<T>();
+            using (var context = new DynamoDBContext(_client))
+            {
+                var scanCondition = new ScanCondition(nameof(Note.userId), ScanOperator.Equal, id);
+                var search = context.ScanAsync<T>(new[] { scanCondition }, _configuration);
+
+                while (!search.IsDone)
+                {
+                    var entities = await search.GetNextSetAsync(cancellationToken);
+                    resultList.AddRange(entities);
+                }
+            }
+
+            return resultList;
+        }
     }
-  }
 }

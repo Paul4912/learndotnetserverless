@@ -44,3 +44,11 @@ functions:
           path: notes
           method: put
           cors: true
+
+  list:
+    handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.ListNotesFunction::Run
+    events:
+      - http:
+          path: notes
+          method: get
+          cors: true
