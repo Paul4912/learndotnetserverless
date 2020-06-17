@@ -52,3 +52,11 @@ functions:
           path: notes
           method: get
           cors: true
+
+  delete:
+    handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.DeleteNoteFunction::Run
+    events:
+      - http:
+          path: notes/delete/{noteId}
+          method: post
+          cors: true

@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
+using Amazon.DynamoDBv2.Model;
 using DotNetServerless.Application.Entities;
 using DotNetServerless.Application.Infrastructure.Configs;
+using DotNetServerless.Application.Requests;
+using DotNetServerless.Application.Responses;
 
 namespace DotNetServerless.Application.Infrastructure.Repositories
 {
@@ -67,6 +71,29 @@ namespace DotNetServerless.Application.Infrastructure.Repositories
             }
 
             return resultList;
+        }
+
+        public async Task<DeleteNoteResponse> DeleteNote<T>(DeleteNoteRequest request, CancellationToken cancellationToken)
+        {
+            //TODO: Check if item exists if not return back error msg.
+            AttributeValue userId = new AttributeValue
+            {
+                S = request.userId
+            };
+            AttributeValue noteId = new AttributeValue
+            {
+                S = request.noteId.ToString()
+            };
+
+            var key = new Dictionary<string, AttributeValue>
+            {
+                { "userId", userId },
+                { "noteId", noteId },
+            };
+            
+            await _client.DeleteItemAsync(_configuration.OverrideTableName, key, cancellationToken);
+
+            return new DeleteNoteResponse { status = true };
         }
     }
 }
