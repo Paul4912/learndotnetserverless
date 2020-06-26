@@ -10,6 +10,7 @@ provider:
   region: ${file(env.configs.yml):region}
   environment:
     DynamoDbConfiguration__TableName: ${file(env.configs.yml):environment}-${file(env.configs.yml):dynamoTable}
+    LAMBDA_NET_SERIALIZER_DEBUG: true
     
   iamRoleStatements:
     - Effect: Allow
@@ -28,6 +29,7 @@ functions:
           path: notes
           method: post
           cors: true
+          authorizer: aws_iam
 
   get:
     handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.GetNoteFunction::Run
@@ -36,6 +38,7 @@ functions:
           path: notes/{id}
           method: get
           cors: true
+          authorizer: aws_iam
 
   update:
     handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.UpdateNoteFunction::Run
@@ -44,6 +47,7 @@ functions:
           path: notes
           method: put
           cors: true
+          authorizer: aws_iam
 
   list:
     handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.ListNotesFunction::Run
@@ -52,6 +56,7 @@ functions:
           path: notes
           method: get
           cors: true
+          authorizer: aws_iam
 
   delete:
     handler: DotNetServerless.Lambda::DotNetServerless.Lambda.Functions.DeleteNoteFunction::Run
@@ -60,3 +65,9 @@ functions:
           path: notes/delete/{noteId}
           method: post
           cors: true
+          authorizer: aws_iam
+
+resources:
+  - ${file(resources/api-gateway-errors.yml)}
+  # Cognito Identity Pool Policy
+  - ${file(resources/cognito-policy.yml)}
