@@ -35,7 +35,17 @@ namespace DotNetServerless.Tests.Functions
     [Fact]
     public async Task run_should_trigger_mediator_handler_and_repository()
     {
-      await _sut.Run(new APIGatewayProxyRequest{ Body = JsonConvert.SerializeObject(new UpdateItemRequest())});
+      await _sut.Run(new APIGatewayProxyRequest
+      { 
+          Body = JsonConvert.SerializeObject(new UpdateItemRequest()),
+          RequestContext = new APIGatewayProxyRequest.ProxyRequestContext
+          {
+              Identity = new APIGatewayProxyRequest.RequestIdentity
+              {
+                  CognitoIdentityId = "21123123213123"
+              }
+          }
+      });
       _mockRepository.Verify(_ => _.Save(It.IsAny<Note>(), It.IsAny<CancellationToken>()), Times.Once);
     }
     
@@ -43,7 +53,17 @@ namespace DotNetServerless.Tests.Functions
     [InlineData(200)]
     public async Task run_should_return_200_when_updates(int statusCode)
     {
-      var result = await _sut.Run(new APIGatewayProxyRequest {Body = JsonConvert.SerializeObject(new UpdateItemRequest())});
+      var result = await _sut.Run(new APIGatewayProxyRequest 
+      {
+          Body = JsonConvert.SerializeObject(new UpdateItemRequest()),
+          RequestContext = new APIGatewayProxyRequest.ProxyRequestContext
+          {
+              Identity = new APIGatewayProxyRequest.RequestIdentity
+              {
+                  CognitoIdentityId = "21123123213123"
+              }
+          }
+      });
       Assert.Equal(result.StatusCode, statusCode);
     }
   }

@@ -40,6 +40,13 @@ namespace DotNetServerless.Tests.Functions
                 PathParameters = new Dictionary<string, string>
                 {
                   { "id", Guid.NewGuid().ToString()}
+                },
+                RequestContext = new APIGatewayProxyRequest.ProxyRequestContext
+                {
+                    Identity = new APIGatewayProxyRequest.RequestIdentity
+                    {
+                        CognitoIdentityId = "21123123213123"
+                    }
                 }
             });
             _mockRepository.Verify(_ => _.GetById<Note>(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
@@ -54,6 +61,13 @@ namespace DotNetServerless.Tests.Functions
                 PathParameters = new Dictionary<string, string>
                 {
                     { "id", Guid.NewGuid().ToString()}
+                },
+                RequestContext = new APIGatewayProxyRequest.ProxyRequestContext
+                {
+                    Identity = new APIGatewayProxyRequest.RequestIdentity
+                    {
+                        CognitoIdentityId = "21123123213123"
+                    }
                 }
             });
 
@@ -72,6 +86,13 @@ namespace DotNetServerless.Tests.Functions
                 PathParameters = new Dictionary<string, string>
                 {
                   { "id", Guid.NewGuid().ToString()}
+                },
+                RequestContext = new APIGatewayProxyRequest.ProxyRequestContext
+                {
+                    Identity = new APIGatewayProxyRequest.RequestIdentity
+                    {
+                        CognitoIdentityId = "21123123213123"
+                    }
                 }
             });
 

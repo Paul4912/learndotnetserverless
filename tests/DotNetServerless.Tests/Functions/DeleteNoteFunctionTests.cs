@@ -43,9 +43,12 @@ namespace DotNetServerless.Tests.Functions
                 {
                   { "noteId", Guid.NewGuid().ToString()}
                 },
-                Headers = new Dictionary<string, string>()
+                RequestContext = new APIGatewayProxyRequest.ProxyRequestContext
                 {
-                    { "userId", "123123213213" }
+                    Identity = new APIGatewayProxyRequest.RequestIdentity
+                    {
+                        CognitoIdentityId = "21123123213123"
+                    }
                 }
             });
             _mockRepository.Verify(_ => _.DeleteNote<DeleteNoteResponse>(It.IsAny<DeleteNoteRequest>(), It.IsAny<CancellationToken>()), Times.Once);
@@ -61,9 +64,12 @@ namespace DotNetServerless.Tests.Functions
                 {
                   { "noteId", Guid.NewGuid().ToString()}
                 },
-                Headers = new Dictionary<string, string>()
+                RequestContext = new APIGatewayProxyRequest.ProxyRequestContext
                 {
-                    { "userId", "123123213213" }
+                    Identity = new APIGatewayProxyRequest.RequestIdentity
+                    {
+                        CognitoIdentityId = "21123123213123"
+                    }
                 }
             });
 

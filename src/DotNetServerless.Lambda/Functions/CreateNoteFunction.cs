@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
+using DotNetServerless.Application.Common;
 using DotNetServerless.Application.Requests;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,12 +30,12 @@ namespace DotNetServerless.Lambda.Functions
         public async Task<APIGatewayProxyResponse> Run(APIGatewayProxyRequest request)
         {
             var requestModel = JsonConvert.DeserializeObject<CreateNoteRequest>(request.Body);
-            //requestModel.userId = request.RequestContext.Identity.CognitoIdentityId;
-            var mediator = _serviceProvider.GetService<IMediator>();
+            requestModel.userId = request.RequestContext.Identity.CognitoIdentityId;
 
+            var mediator = _serviceProvider.GetService<IMediator>();
             var result = await mediator.Send(requestModel);
 
-            return new APIGatewayProxyResponse { StatusCode = 201, Body = JsonConvert.SerializeObject(result) };
+            return new APIGatewayProxyResponse { StatusCode = 201, Body = JsonConvert.SerializeObject(result), Headers = CommonHeaders.corsHeaders };
         }
     }
 }

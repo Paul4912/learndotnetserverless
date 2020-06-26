@@ -37,9 +37,12 @@ namespace DotNetServerless.Tests.Functions
         {
             await _sut.Run(new APIGatewayProxyRequest
             {
-                Headers = new Dictionary<string,string>()
+                RequestContext = new APIGatewayProxyRequest.ProxyRequestContext
                 {
-                    { "userId", "123123213213" }
+                    Identity = new APIGatewayProxyRequest.RequestIdentity
+                    {
+                        CognitoIdentityId = "21123123213123"
+                    }
                 }
             });
             _mockRepository.Verify(_ => _.ListByUserId<Note>(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
@@ -51,9 +54,12 @@ namespace DotNetServerless.Tests.Functions
         {
             var result = await _sut.Run(new APIGatewayProxyRequest
             {
-                Headers = new Dictionary<string, string>()
+                RequestContext = new APIGatewayProxyRequest.ProxyRequestContext
                 {
-                    { "userId", "123123213213" }
+                    Identity = new APIGatewayProxyRequest.RequestIdentity
+                    {
+                        CognitoIdentityId = "21123123213123"
+                    }
                 }
             });
 
