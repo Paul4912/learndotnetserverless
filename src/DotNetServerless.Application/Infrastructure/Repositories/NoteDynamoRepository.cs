@@ -93,7 +93,7 @@ namespace DotNetServerless.Application.Infrastructure.Repositories
             
             await _client.DeleteItemAsync(_configuration.OverrideTableName, key, cancellationToken);
 
-            return new DeleteNoteResponse { status = true };
+            return new DeleteNoteResponse { Status = true };
         }
     }
 }

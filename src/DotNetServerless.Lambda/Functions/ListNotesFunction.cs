@@ -29,7 +29,7 @@ namespace DotNetServerless.Lambda.Functions
         public async Task<APIGatewayProxyResponse> Run(APIGatewayProxyRequest request)
         {
             var requestModel = new ListNotesRequest { userId = request.RequestContext.Identity.CognitoIdentityId };
-
+            
             var mediator = _serviceProvider.GetService<IMediator>();
             var result = await mediator.Send(requestModel);
 

@@ -24,7 +24,7 @@ namespace DotNetServerless.Tests.Functions
         public DeleteNoteFunctionTests()
         {
             _mockRepository = new Mock<INoteRepository>();
-            _mockRepository.Setup(_ => _.DeleteNote<DeleteNoteResponse>(It.IsAny<DeleteNoteRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(new DeleteNoteResponse { status = true });
+            _mockRepository.Setup(_ => _.DeleteNote<DeleteNoteResponse>(It.IsAny<DeleteNoteRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(new DeleteNoteResponse { Status = true });
 
             var serviceCollection = Startup.BuildContainer();
 
