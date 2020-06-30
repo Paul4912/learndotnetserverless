@@ -1,7 +1,10 @@
-﻿namespace DotNetServerless.Application.Responses
+﻿using Newtonsoft.Json;
+
+namespace DotNetServerless.Application.Responses
 {
     public class DeleteNoteResponse
     {
-        public bool status { get; set; }
+        [JsonProperty("status")]
+        public bool Status { get; set; }
     }
 }

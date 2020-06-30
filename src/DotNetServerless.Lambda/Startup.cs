@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using DotNetServerless.Application.Infrastructure;
 using DotNetServerless.Application.Infrastructure.Configs;
 using DotNetServerless.Application.Infrastructure.Repositories;
@@ -27,7 +28,7 @@ namespace DotNetServerless.Lambda
       var services = new ServiceCollection();
 
       services
-        .AddMediatR()
+        .AddMediatR(AppDomain.CurrentDomain.Load("DotNetServerless.Application"))
         .AddTransient(typeof(IAwsClientFactory<>), typeof(AwsClientFactory<>))
         .AddTransient<INoteRepository, NoteDynamoRepository>()
         .BindAndConfigure(configurationRoot.GetSection("DynamoDbConfiguration"), new DynamoDbConfiguration())

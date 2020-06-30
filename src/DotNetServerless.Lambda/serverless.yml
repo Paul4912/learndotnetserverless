@@ -6,7 +6,7 @@ frameworkVersion: ">=1.6.0 <2.1.0"
 provider:
   name: aws
   stackName: ${file(env.configs.yml):feature}-${file(env.configs.yml):environment}
-  runtime: dotnetcore2.1
+  runtime: dotnetcore3.1
   region: ${file(env.configs.yml):region}
   environment:
     DynamoDbConfiguration__TableName: ${file(env.configs.yml):environment}-${file(env.configs.yml):dynamoTable}
@@ -19,7 +19,7 @@ provider:
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DynamoDbConfiguration__TableName}"
 
 package:
-  artifact: bin/release/netcoreapp2.1/deploy-package.zip
+  artifact: bin/release/netcoreapp3.1/deploy-package.zip
   
 functions:
   create:
