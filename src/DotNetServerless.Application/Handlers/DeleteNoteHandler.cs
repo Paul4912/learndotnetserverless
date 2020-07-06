@@ -2,7 +2,6 @@
 using DotNetServerless.Application.Requests;
 using DotNetServerless.Application.Responses;
 using MediatR;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 

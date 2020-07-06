@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\DotNetServerless.Lambda\DotNetServerless.Lambda.csproj" />
+      <ProjectReference Include="..\..\src\DotNetServerless.Notes\DotNetServerless.Notes.csproj" />
     </ItemGroup>
 
 </Project>
