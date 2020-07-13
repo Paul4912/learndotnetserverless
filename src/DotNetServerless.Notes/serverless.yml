@@ -71,9 +71,9 @@ functions:
           authorizer: aws_iam
 
 resources:
-  - ${file(resources/api-gateway-errors.yml)}
+  - ${file(Resources/api-gateway-errors.yml)}
   # Cognito Identity Pool Policy
-  - ${file(resources/cognito-policy.yml)}
+  - ${file(Resources/cognito-policy.yml)}
 
   - Outputs:
       ApiGatewayRestApiId:
