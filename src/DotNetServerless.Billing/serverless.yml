@@ -3,9 +3,15 @@ service: ${file(env.configs.yml):feature}
 
 frameworkVersion: ">=1.6.0 <2.1.0"
 
+custom: ${file(../../serverless.common.yml):custom}
+
+package:
+  artifact: bin/release/netcoreapp3.1/deploy-package.zip
+
 provider:
   name: aws
-  stackName: ${file(env.configs.yml):feature}-${file(env.configs.yml):environment}
+  stackName: ${file(env.configs.yml):feature}-${self:custom.stage}
+  stage: dev
   runtime: dotnetcore3.1
   region: ${file(env.configs.yml):region}
   environment:
@@ -13,9 +19,9 @@ provider:
 
   apiGateway:
     restApiId:
-      'Fn::ImportValue': ${file(env.configs.yml):environment}-NotesApiGatewayRestApiId
+      'Fn::ImportValue': ${self:custom.stage}-NotesApiGatewayRestApiId
     restApiRootResourceId:
-      'Fn::ImportValue': ${file(env.configs.yml):environment}-NotesApiGatewayRestApiRootResourceId
+      'Fn::ImportValue': ${self:custom.stage}-NotesApiGatewayRestApiRootResourceId
     
   iamRoleStatements:
     - Effect: Allow
@@ -36,9 +42,6 @@ provider:
         - sns:Publish
       Resource:
         - Ref: NotesPurchasedTopic
-
-package:
-  artifact: bin/release/netcoreapp3.1/deploy-package.zip
   
 functions:
   billing:
@@ -55,11 +58,11 @@ resources:
     NotesPurchasedTopic:
       Type: AWS::SNS::Topic
       Properties:
-        TopicName: notes-purchased-${file(env.configs.yml):environment}
+        TopicName: notes-purchased-${self:custom.stage}
 
   Outputs:
     NotesPurchasedTopicArn:
       Value:
         Ref: NotesPurchasedTopic
       Export:
-        Name: NotesPurchasedTopicArn-${file(env.configs.yml):environment}
+        Name: NotesPurchasedTopicArn-${self:custom.stage}

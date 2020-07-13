@@ -3,13 +3,19 @@ service: ${file(env.configs.yml):feature}
 
 frameworkVersion: ">=1.6.0 <2.1.0"
 
+custom: ${file(../../serverless.common.yml):custom}
+
+package:
+  artifact: bin/release/netcoreapp3.1/deploy-package.zip
+
 provider:
   name: aws
-  stackName: ${file(env.configs.yml):feature}-${file(env.configs.yml):environment}
+  stackName: ${file(env.configs.yml):feature}-${self:custom.stage}
+  stage: dev
   runtime: dotnetcore3.1
   region: ${file(env.configs.yml):region}
   environment:
-    DynamoDbConfiguration__TableName: ${file(env.configs.yml):environment}-${file(env.configs.yml):dynamoTable}
+    DynamoDbConfiguration__TableName: ${self:custom.stage}-${file(env.configs.yml):dynamoTable}
     LAMBDA_NET_SERIALIZER_DEBUG: true
     
   iamRoleStatements:
@@ -17,9 +23,6 @@ provider:
       Action:
         - dynamodb:*
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DynamoDbConfiguration__TableName}"
-
-package:
-  artifact: bin/release/netcoreapp3.1/deploy-package.zip
   
 functions:
   create:
@@ -77,7 +80,7 @@ resources:
         Value:
           Ref: ApiGatewayRestApi
         Export:
-          Name: ${file(env.configs.yml):environment}-NotesApiGatewayRestApiId
+          Name: ${self:custom.stage}-NotesApiGatewayRestApiId
     
       ApiGatewayRestApiRootResourceId:
         Value:
@@ -85,4 +88,4 @@ resources:
             - ApiGatewayRestApi
             - RootResourceId 
         Export:
-          Name: ${file(env.configs.yml):environment}-NotesApiGatewayRestApiRootResourceId
+          Name: ${self:custom.stage}-NotesApiGatewayRestApiRootResourceId
