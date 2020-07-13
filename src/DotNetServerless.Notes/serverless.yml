@@ -1,5 +1,5 @@
 
-service: ${file(env.configs.yml):feature}
+service: learningserverless
 
 frameworkVersion: ">=1.6.0 <2.1.0"
 
@@ -10,12 +10,12 @@ package:
 
 provider:
   name: aws
-  stackName: ${file(env.configs.yml):feature}-${self:custom.stage}
+  stackName: learningserverless-${self:custom.stage}
   stage: dev
   runtime: dotnetcore3.1
-  region: ${file(env.configs.yml):region}
+  region: ap-southeast-2
   environment:
-    DynamoDbConfiguration__TableName: ${self:custom.stage}-${file(env.configs.yml):dynamoTable}
+    DynamoDbConfiguration__TableName: ${self:custom.stage}-notes
     LAMBDA_NET_SERIALIZER_DEBUG: true
     
   iamRoleStatements:
