@@ -2,7 +2,7 @@
   CognitoAuthorizedApiPolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: CognitoAuthorizedApiPolicy-${file(env.configs.yml):environment}
+      PolicyName: CognitoAuthorizedApiPolicy-${self:custom.stage}
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -21,4 +21,4 @@
                   - Ref: ApiGatewayRestApi
                   - '/*'
       Roles:
-        - 'Fn::ImportValue': CognitoAuthRole-${file(env.configs.yml):environment}
+        - 'Fn::ImportValue': CognitoAuthRole-${self:custom.stage}
