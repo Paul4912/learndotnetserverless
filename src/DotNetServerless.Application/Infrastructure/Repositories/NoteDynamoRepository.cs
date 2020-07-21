@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
@@ -10,6 +6,10 @@ using DotNetServerless.Application.Entities;
 using DotNetServerless.Application.Infrastructure.Configs;
 using DotNetServerless.Application.Requests;
 using DotNetServerless.Application.Responses;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DotNetServerless.Application.Infrastructure.Repositories
 {
@@ -24,7 +24,7 @@ namespace DotNetServerless.Application.Infrastructure.Repositories
             _client = clientFactory.GetAwsClient();
             _configuration = new DynamoDBOperationConfig
             {
-                OverrideTableName = "dev-notes"/*configuration.TableName*/,
+                OverrideTableName = $"{Environment.GetEnvironmentVariable("stage")}-notes",
                 SkipVersionCheck = true
             };
         }

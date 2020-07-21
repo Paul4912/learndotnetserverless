@@ -17,6 +17,7 @@ provider:
   environment:
     DynamoDbConfiguration__TableName: ${self:custom.stage}-notes
     LAMBDA_NET_SERIALIZER_DEBUG: true
+    stage: ${self:custom.stage}
     
   iamRoleStatements:
     - Effect: Allow
