@@ -16,6 +16,7 @@ provider:
   region: ap-southeast-2
   environment:
     LAMBDA_NET_SERIALIZER_DEBUG: true
+    stage: ${self:custom.stage}
 
   apiGateway:
     restApiId:
