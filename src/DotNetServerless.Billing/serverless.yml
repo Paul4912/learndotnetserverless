@@ -25,6 +25,7 @@ provider:
       'Fn::ImportValue': ${self:custom.stage}-NotesApiGatewayRestApiRootResourceId
     
   iamRoleStatements:
+    - ${file(../../serverless.common.yml):lambdaPolicyXRay}
     - Effect: Allow
       Action:
         - ssm:GetParameter
