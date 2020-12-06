@@ -1,6 +1,6 @@
 <!--
 title: 'Dot Net REST API with DynamoDB'
-description: 'Setup a REST API w/ DynamoDB using Dot Net Core 2.1'
+description: 'Setup a REST API w/ DynamoDB using Dot Net Core 3.1'
 framework: v1
 platform: AWS
 language: CSharp
@@ -11,7 +11,7 @@ authorAvatar: 'https://avatars0.githubusercontent.com/u/8921095?v=4&s=140'
 
 # DotNetServerless
 
-The following AWS lambda is built in .NET Core 2.1
+The following AWS lambda is built in .NET Core 3.1
 
 
 ## Configure lambda
